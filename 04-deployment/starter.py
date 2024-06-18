@@ -18,6 +18,7 @@ def read_data(filename):
 def load_model(model_name='model.bin'):
     with open(model_name, 'rb') as f_in:
         dv, model = pickle.load(f_in)
+
     return dv, model
 
 def apply_model(year, month ,model_name = 'model.bin', taxi_type = 'yellow'):
@@ -49,7 +50,6 @@ def save_results(df: pd.DataFrame,y_pred,output_file):
         compression=None,
         index=False
     )
-    return None
 
 def create_output_folder(output_file):
     path = os.path.dirname(output_file)
