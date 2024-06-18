@@ -20,8 +20,7 @@ def load_model(model_name='model.bin'):
         dv, model = pickle.load(f_in)
     return dv, model
 
-def apply_model(year=2023,month=1,model_name='model.bin'):
-    taxi_type = 'yellow'
+def apply_model(year, month ,model_name = 'model.bin', taxi_type = 'yellow'):
     input_file = f'https://d37ci6vzurychx.cloudfront.net/trip-data/{taxi_type}_tripdata_{year:04d}-{month:02d}.parquet'
     output_file = f'output/{taxi_type}/{year:04d}-{month:02d}.parquet'
 
@@ -43,7 +42,7 @@ def save_results(df: pd.DataFrame,y_pred,output_file):
     df_result['ride_id'] = df['ride_id']
     df_result['prediction'] = y_pred
 
-    create_outfolder(output_file)
+    create_output_folder(output_file)
     df_result.to_parquet(
         output_file,
         engine='pyarrow',
@@ -52,7 +51,7 @@ def save_results(df: pd.DataFrame,y_pred,output_file):
     )
     return None
 
-def create_outfolder(output_file):
+def create_output_folder(output_file):
     path = os.path.dirname(output_file)
     current_directory = os.getcwd()
     final_directory = os.path.join(current_directory, path)
@@ -64,13 +63,9 @@ def run():
     year = int(sys.argv[1]) 
     month = int(sys.argv[2]) 
 
-    y_pred, _ = apply_model(
-                    year=year,
-                    month=month,
-                    model_name='model.bin'
-                )
+    y_pred, _ = apply_model(year = year, month = month)
 
-    print(f'For {month:02d}/{year:04d} the mean predicted duration is {y_pred.mean():.2f} minutes')
+    print(f'{month:02d}/{year:04d} the mean predicted duration is {y_pred.mean()} minutes')
 
 if __name__=='__main__':
     run()
